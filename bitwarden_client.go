@@ -68,6 +68,19 @@ func (c *BitwardenClient) AccessTokenLogin(accessToken string, stateFile *string
 	return checkSuccessAndError(responseStr, &response)
 }
 
+func (c *BitwardenClient) APIKeyLogin(clientID string, clientSecret string, password string) error {
+	req := APIKeyLoginRequest{ClientID: clientID, ClientSecret: clientSecret, Password: password}
+	command := Command{APIKeyLogin: &req}
+
+	responseStr, err := c.commandRunner.RunCommand(command)
+	if err != nil {
+		return err
+	}
+
+	var response APIKeyLoginResponse
+	return checkSuccessAndError(responseStr, &response)
+}
+
 func (c *BitwardenClient) Projects() ProjectsInterface {
 	return c.projects
 }
